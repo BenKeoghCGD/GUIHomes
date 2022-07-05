@@ -1,5 +1,7 @@
 package uk.co.benkeoghcgd.api.GUIHomes.Commands;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -29,9 +31,23 @@ public class homeCommand extends AxiusCommand {
 
     @Override
     public boolean onCommand(CommandSender sndr, Command command, String s, String[] args) {
-        if(sndr instanceof ConsoleCommandSender) {
-            sndr.sendMessage("§cThis command can only be run by players");
-            return false;
+
+        if(args.length == 1) {
+            if(!sndr.hasPermission("guihomes.other")) return false;
+
+            OfflinePlayer p = Bukkit.getOfflinePlayer(args[0]);
+
+            List<String> homes = homesYML.getPlayerHomes(p);
+
+            if(homes.isEmpty()) {
+                sndr.sendMessage(plugin.getNameFormatted() + "§7 That player does not exist, or has no homes set.");
+                return true;
+            }
+
+            HomesGUI gui = new HomesGUI(plugin, homesYML, (Player)sndr, p, GUIAssets.getInventorySize(homes.size()) / 9);
+            gui.show((Player) sndr);
+
+            return true;
         }
 
         List<String> homes = homesYML.getPlayerHomes((Player)sndr);
@@ -41,7 +57,7 @@ public class homeCommand extends AxiusCommand {
             return true;
         }
 
-        HomesGUI gui = new HomesGUI(plugin, homesYML, (Player)sndr, GUIAssets.getInventorySize(homes.size()) / 9);
+        HomesGUI gui = new HomesGUI(plugin, homesYML, (Player)sndr, (Player)sndr, GUIAssets.getInventorySize(homes.size()) / 9);
         gui.show((Player) sndr);
 
         return true;

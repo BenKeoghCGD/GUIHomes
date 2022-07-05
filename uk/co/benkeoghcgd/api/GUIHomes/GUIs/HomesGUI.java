@@ -1,9 +1,6 @@
 package uk.co.benkeoghcgd.api.GUIHomes.GUIs;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -17,15 +14,27 @@ import java.util.HashMap;
 
 public class HomesGUI extends GUI {
 
-    Player p;
+    Player p, sndr;
     HomesYML data;
     HashMap<ItemStack, Location> homes = new HashMap<>();
     GUIHomes main;
 
-    public HomesGUI(AxiusPlugin plugin, HomesYML homesYML, Player sndr, int i) {
-        super(plugin, i, plugin.getNameFormatted() + "§7 Your homes.");
+    public HomesGUI(AxiusPlugin plugin, HomesYML homesYML, Player sndr, Player target, int i) {
+        super(plugin, i, plugin.getNameFormatted() + (sndr == target ? "§7 Your homes." : "§7 Homes of: " + target.getName()));
 
-        p = sndr;
+        p = target;
+        this.sndr = sndr;
+        main = (GUIHomes) plugin;
+        data = homesYML;
+
+        Populate();
+    }
+
+    public HomesGUI(AxiusPlugin plugin, HomesYML homesYML, Player sndr, OfflinePlayer target, int i) {
+        super(plugin, i, plugin.getNameFormatted() + (sndr == target ? "§7 Your homes." : "§7 Homes of: " + target.getName()));
+
+        p = target.getPlayer();
+        this.sndr = sndr;
         main = (GUIHomes) plugin;
         data = homesYML;
 

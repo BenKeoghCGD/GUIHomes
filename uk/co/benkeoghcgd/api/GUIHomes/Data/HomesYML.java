@@ -2,6 +2,7 @@ package uk.co.benkeoghcgd.api.GUIHomes.Data;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import uk.co.benkeoghcgd.api.AxiusCore.API.AxiusPlugin;
@@ -52,6 +53,10 @@ public class HomesYML extends DataHandler {
     }
 
     public List<String> getPlayerHomes(Player player) {
+        return cfg.getStringList("homes." + player.getUniqueId());
+    }
+
+    public List<String> getPlayerHomes(OfflinePlayer player) {
         return cfg.getStringList("homes." + player.getUniqueId());
     }
 

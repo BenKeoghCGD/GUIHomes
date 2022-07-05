@@ -1,6 +1,0 @@
-name: GUIHomes
-main: uk.co.benkeoghcgd.api.GUIHomes.GUIHomes
-version: 1.0.0
-api-version: 1.18
-softdepend:
-  - AxiusCore
