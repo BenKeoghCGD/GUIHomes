@@ -44,7 +44,7 @@ public class homeCommand extends AxiusCommand {
                 return true;
             }
 
-            HomesGUI gui = new HomesGUI(plugin, homesYML, (Player)sndr, p, GUIAssets.getInventorySize(homes.size()) / 9);
+            HomesGUI gui = new HomesGUI(plugin, homesYML, (Player)sndr, p, GUIAssets.getInventoryRows(homes.size()));
             gui.show((Player) sndr);
 
             return true;
@@ -57,7 +57,7 @@ public class homeCommand extends AxiusCommand {
             return true;
         }
 
-        HomesGUI gui = new HomesGUI(plugin, homesYML, (Player)sndr, (Player)sndr, GUIAssets.getInventorySize(homes.size()) / 9);
+        HomesGUI gui = new HomesGUI(plugin, homesYML, (Player)sndr, (Player)sndr, GUIAssets.getInventoryRows(homes.size()));
         gui.show((Player) sndr);
 
         return true;

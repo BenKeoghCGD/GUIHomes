@@ -14,9 +14,11 @@ import java.util.List;
 public class HomesYML extends DataHandler {
 
     static AxiusPlugin plg;
+    YamlConfiguration cfg;
 
     public HomesYML(AxiusPlugin instance) {
         super(instance, "Homes");
+        this.cfg = YamlConfiguration.loadConfiguration(file);
         refresh();
     }
 

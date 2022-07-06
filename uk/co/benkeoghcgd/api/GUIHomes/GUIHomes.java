@@ -3,6 +3,7 @@ package uk.co.benkeoghcgd.api.GUIHomes;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Material;
 import uk.co.benkeoghcgd.api.AxiusCore.API.AxiusPlugin;
+import uk.co.benkeoghcgd.api.AxiusCore.API.Enums.VersionFormat;
 import uk.co.benkeoghcgd.api.AxiusCore.API.GUI;
 import uk.co.benkeoghcgd.api.AxiusCore.Utils.Logging;
 import uk.co.benkeoghcgd.api.GUIHomes.Commands.homeCommand;
@@ -19,7 +20,7 @@ public class GUIHomes extends AxiusPlugin {
     @Override
     protected void Preregister() {
         Logging.Log(this, "Running plugin pre-registry tasks");
-        EnableUpdater(102909);
+        EnableUpdater(102909, VersionFormat.MajorMinorPatch, ".");
         Metrics m = new Metrics(this, 15677);
 
         Logging.Log(this, "Registering Data Files");

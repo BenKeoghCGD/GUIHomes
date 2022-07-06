@@ -75,7 +75,7 @@ public class HomesGUI extends GUI {
                     inventoryClickEvent.getWhoClicked().closeInventory();
                 }
                 else if (inventoryClickEvent.getClick() == ClickType.RIGHT) {
-                    data.deleteHome((Player) inventoryClickEvent.getWhoClicked(), homeName.toUpperCase());
+                    data.deleteHome(p, homeName.toUpperCase());
                     inventoryClickEvent.getWhoClicked().sendMessage(main.getNameFormatted() + "§7 Deleted home: §3" + homeName + "§7.");
                     inventoryClickEvent.getWhoClicked().closeInventory();
                     container.clear();
