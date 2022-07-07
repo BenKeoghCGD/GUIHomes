@@ -22,4 +22,4 @@ Hey! thanks for being interested in using GUIHomes. GUIHomes is a super lightwei
 - Set homes using commands
 - Manage homes using GUI
 - Teleport using GUI
-- Permission-based maxiumum homes
+- Permission-based maximum homes
