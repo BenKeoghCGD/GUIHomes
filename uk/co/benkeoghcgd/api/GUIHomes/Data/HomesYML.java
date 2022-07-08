@@ -2,6 +2,7 @@ package uk.co.benkeoghcgd.api.GUIHomes.Data;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -13,11 +14,12 @@ import java.util.List;
 
 public class HomesYML extends DataHandler {
 
-    static AxiusPlugin plg;
     YamlConfiguration cfg;
+    static AxiusPlugin plug;
 
     public HomesYML(AxiusPlugin instance) {
         super(instance, "Homes");
+        this.plug = instance;
         this.cfg = YamlConfiguration.loadConfiguration(file);
         refresh();
     }
@@ -29,8 +31,8 @@ public class HomesYML extends DataHandler {
     @Override
     protected void saveDefaults() {
         List<String> exampleHomes = new ArrayList<>();
-        exampleHomes.add("name;world:x:y:z:pitch:yaw");
-        exampleHomes.add("example;world:0:0:0:-90:33");
+        exampleHomes.add("name;world:x:y:z:pitch:yaw:blockID");
+        exampleHomes.add("example;world:0:0:0:-90:33:" + Material.GRASS_BLOCK.toString());
 
         setData("homes.exampleUUID-someothernumbers-nstuff", exampleHomes, false);
     }
@@ -42,7 +44,7 @@ public class HomesYML extends DataHandler {
 
     public static Location stringToLocation(String s) {
         String[] parts = s.split(":");
-        if(parts.length != 6) plg.errors.add(new Exception("Input Error: stringToLocation"));
+        if(parts.length < 6) plug.errors.add(new Exception("Input Error: stringToLocation"));
         else {
             return new Location(Bukkit.getWorld(parts[0]), Double.parseDouble(parts[1]), Double.parseDouble(parts[2]), Double.parseDouble(parts[3]), Float.parseFloat(parts[5]), Float.parseFloat(parts[4]));
         }
@@ -72,14 +74,49 @@ public class HomesYML extends DataHandler {
         }
 
         if(canAdd) {
-            homes.add(name + ";" + locationToString(loc));
+            homes.add(name + ";" + locationToString(loc) + ":default");
             setData("homes." + player.getUniqueId(), homes);
         }
 
         return canAdd;
     }
 
-    public boolean deleteHome(Player player, String name) {
+    public boolean addHome(Player player, Location loc, String name, Material m) {
+        List<String> homes = getPlayerHomes(player);
+        boolean canAdd = true;
+        if(!homes.isEmpty()) {
+            for(String s : homes) {
+                if(s.startsWith(name)) canAdd = false;
+            }
+        }
+
+        if(canAdd) {
+            homes.add(name + ";" + locationToString(loc) + ":" + m.toString());
+            setData("homes." + player.getUniqueId(), homes);
+        }
+
+        return canAdd;
+    }
+
+    public boolean overrideHome(Player player, Location loc, String name, Material m) {
+        List<String> homes = getPlayerHomes(player);
+        String oldHome = null;
+        if(!homes.isEmpty()) {
+            for(String s : homes) {
+                if(s.startsWith(name)) oldHome = s;
+            }
+        }
+
+        if(oldHome != null) {
+            homes.remove(oldHome);
+            homes.add(name + ";" + locationToString(loc) + ":" + m.toString());
+            setData("homes." + player.getUniqueId(), homes);
+        }
+
+        return oldHome != null;
+    }
+
+    public boolean deleteHome(OfflinePlayer player, String name) {
         List<String> homes = getPlayerHomes(player);
         boolean canDel = false;
         if(!homes.isEmpty()) {
@@ -94,5 +131,12 @@ public class HomesYML extends DataHandler {
         }
 
         return canDel;
+    }
+
+    public String getHomeRaw(OfflinePlayer p, String homeName) {
+        for(String s : getPlayerHomes(p)) {
+            if(s.split(";")[0].equalsIgnoreCase(homeName)) return s;
+        }
+        return null;
     }
 }

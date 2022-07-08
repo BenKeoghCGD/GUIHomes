@@ -18,10 +18,12 @@ public class HomesGUI extends GUI {
     HomesYML data;
     HashMap<ItemStack, Location> homes = new HashMap<>();
     GUIHomes main;
+    AxiusPlugin instance;
 
     public HomesGUI(AxiusPlugin plugin, HomesYML homesYML, Player sndr, Player target, int i) {
         super(plugin, i, plugin.getNameFormatted() + (sndr == target ? "§7 Your homes." : "§7 Homes of: " + target.getName()));
 
+        instance = plugin;
         p = target;
         this.sndr = sndr;
         main = (GUIHomes) plugin;
@@ -33,6 +35,7 @@ public class HomesGUI extends GUI {
     public HomesGUI(AxiusPlugin plugin, HomesYML homesYML, Player sndr, OfflinePlayer target, int i) {
         super(plugin, i, plugin.getNameFormatted() + (sndr == target ? "§7 Your homes." : "§7 Homes of: " + target.getName()));
 
+        instance = plugin;
         p = target.getPlayer();
         this.sndr = sndr;
         main = (GUIHomes) plugin;
@@ -57,8 +60,13 @@ public class HomesGUI extends GUI {
             if(parts[0].equalsIgnoreCase("home")) mat = Material.OAK_PLANKS;
             else if(parts[0].equalsIgnoreCase("bed")) mat = Material.RED_BED;
 
+            if(parts[1].split(":").length == 7) {
+                Material tempMat = Material.matchMaterial(parts[1].split(":")[6]);
+                if(tempMat != null && !parts[1].split(":")[6].equalsIgnoreCase("default")) mat = tempMat;
+            }
+
             String[] loreLinesRaw = LocationToString(loc).split(", ");
-            ItemStack itm = createGuiItem(mat, "§3§l" + parts[0].toUpperCase(), "§7" + loreLinesRaw[0], "§7" + loreLinesRaw[1], "§7" + loreLinesRaw[2], "", "§aLeft-Click to Teleport", "§cRight-Click to Delete");
+            ItemStack itm = createGuiItem(mat, "§3§l" + parts[0].toUpperCase(), "§7" + loreLinesRaw[0], "§7" + loreLinesRaw[1], "§7" + loreLinesRaw[2], "", "§aLeft-Click to Teleport", "§6SHIFT-Left-CLick to Edit Block", "§cRight-Click to Delete");
             homes.put(itm, loc);
             container.addItem(itm);
         }
@@ -75,12 +83,14 @@ public class HomesGUI extends GUI {
                     inventoryClickEvent.getWhoClicked().closeInventory();
                 }
                 else if (inventoryClickEvent.getClick() == ClickType.RIGHT) {
-                    data.deleteHome(p, homeName.toUpperCase());
-                    inventoryClickEvent.getWhoClicked().sendMessage(main.getNameFormatted() + "§7 Deleted home: §3" + homeName + "§7.");
                     inventoryClickEvent.getWhoClicked().closeInventory();
-                    container.clear();
-                    Populate();
-                    show((Player) inventoryClickEvent.getWhoClicked());
+                    DeleteConfirmGUI dcGUI = new DeleteConfirmGUI(instance, data, sndr, p, homeName, homes.get(i));
+                    dcGUI.show(sndr);
+                }
+                else if (inventoryClickEvent.getClick() == ClickType.SHIFT_LEFT) {
+                    inventoryClickEvent.getWhoClicked().closeInventory();
+                    EditHomeGUI dcGUI = new EditHomeGUI(instance, data, sndr, p, homeName);
+                    dcGUI.show(sndr);
                 }
                 return;
             }
