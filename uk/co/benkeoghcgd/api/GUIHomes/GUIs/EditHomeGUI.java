@@ -8,11 +8,9 @@ import uk.co.benkeoghcgd.api.AxiusCore.API.AxiusPlugin;
 import uk.co.benkeoghcgd.api.AxiusCore.API.GUI;
 import uk.co.benkeoghcgd.api.GUIHomes.Data.HomesYML;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
 
 public class EditHomeGUI extends GUI {
 
@@ -22,7 +20,7 @@ public class EditHomeGUI extends GUI {
     String home;
     Material newMat = null;
 
-    List<Material> options = Arrays.asList(Material.GRASS_BLOCK, Material.IRON_BLOCK, Material.GOLD_BLOCK, Material.DIAMOND_BLOCK, Material.LAVA_CAULDRON, Material.WATER_CAULDRON,
+    List<Material> options = Arrays.asList(Material.GRASS_BLOCK, Material.IRON_BLOCK, Material.GOLD_BLOCK, Material.DIAMOND_BLOCK, Material.LAVA_BUCKET, Material.WATER_BUCKET,
             Material.OAK_PLANKS, Material.ANVIL, Material.BEACON, Material.BEDROCK, Material.FARMLAND, Material.END_PORTAL_FRAME, Material.OBSIDIAN, Material.REDSTONE_BLOCK,
             Material.BEEHIVE, Material.BELL, Material.BONE_BLOCK, Material.BOOKSHELF, Material.ENCHANTING_TABLE, Material.ENDER_CHEST, Material.BLACKSTONE, Material.CRAFTING_TABLE,
             Material.FURNACE, Material.RAIL, Material.CLAY, Material.LECTERN, Material.SPAWNER);
