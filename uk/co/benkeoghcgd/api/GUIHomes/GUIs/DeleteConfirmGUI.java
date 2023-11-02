@@ -6,25 +6,27 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import uk.co.benkeoghcgd.api.AxiusCore.API.AxiusPlugin;
-import uk.co.benkeoghcgd.api.AxiusCore.API.GUI;
+import uk.co.benkeoghcgd.api.AxiusCore.API.Utilities.GUI;
 import uk.co.benkeoghcgd.api.AxiusCore.Utils.GUIAssets;
 import uk.co.benkeoghcgd.api.GUIHomes.Data.HomesYML;
+import uk.co.benkeoghcgd.api.GUIHomes.Data.MessagesYML;
+import uk.co.benkeoghcgd.api.GUIHomes.GUIHomes;
 
 public class DeleteConfirmGUI extends GUI {
 
     HomesYML data;
     Player sender;
     OfflinePlayer target;
-    AxiusPlugin plug;
+    GUIHomes plug;
     String home;
     Location loc;
 
     public DeleteConfirmGUI(AxiusPlugin instance, HomesYML hyml, Player sender, OfflinePlayer target, String home, Location loc) {
-        super(instance, 1, instance.getNameFormatted() + "§7 Confirm Deletion");
+        super(instance, 1, instance.getNameFormatted() + " " + MessagesYML.translateColor(((GUIHomes)instance).myml.data.get("GUI.Delete.Title")));
         data = hyml;
         this.sender = sender;
         this.target = target;
-        plug = instance;
+        plug = (GUIHomes) instance;
         this.home = home;
         this.loc = loc;
 
@@ -43,11 +45,10 @@ public class DeleteConfirmGUI extends GUI {
             inventoryClickEvent.getWhoClicked().sendMessage(plug.getNameFormatted() + "§7 Deleted home: §3" + home.toUpperCase() + "§7.");
             data.deleteHome(target, home);
         }
-        else if (inventoryClickEvent.getSlot() == 2) {}
-        else return;
+        else if (inventoryClickEvent.getSlot() != 2) return;
 
         inventoryClickEvent.getWhoClicked().closeInventory();
-        HomesGUI gui = new HomesGUI(plug, data, sender, target, GUIAssets.getInventoryRows(data.getPlayerHomes(target).size()));
+        HomesGUI gui = new HomesGUI(plug, data, sender, target, GUIAssets.getInventoryRows(data.getPlayerHomes(target).size()), plug.myml);
         gui.show(sender);
     }
 }

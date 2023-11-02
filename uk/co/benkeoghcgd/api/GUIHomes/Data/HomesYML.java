@@ -7,19 +7,21 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import uk.co.benkeoghcgd.api.AxiusCore.API.AxiusPlugin;
-import uk.co.benkeoghcgd.api.AxiusCore.API.DataHandler;
+import uk.co.benkeoghcgd.api.AxiusCore.API.Utilities.DataHandler;
+import uk.co.benkeoghcgd.api.GUIHomes.GUIHomes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomesYML extends DataHandler {
 
     YamlConfiguration cfg;
-    static AxiusPlugin plug;
+    static GUIHomes plug;
 
     public HomesYML(AxiusPlugin instance) {
         super(instance, "Homes");
-        this.plug = instance;
+        plug = GUIHomes.getInstance();
         this.cfg = YamlConfiguration.loadConfiguration(file);
         refresh();
     }
@@ -32,13 +34,13 @@ public class HomesYML extends DataHandler {
     protected void saveDefaults() {
         List<String> exampleHomes = new ArrayList<>();
         exampleHomes.add("name;world:x:y:z:pitch:yaw:blockID");
-        exampleHomes.add("example;world:0:0:0:-90:33:" + Material.GRASS_BLOCK.toString());
+        exampleHomes.add("example;world:0:0:0:-90:33:" + Material.GRASS_BLOCK.name());
 
         setData("homes.exampleUUID-someothernumbers-nstuff", exampleHomes, false);
     }
 
     public static String locationToString(Location location) {
-        return location.getWorld().getName() + ":" + location.getX() + ":" + location.getY() + ":"
+        return Objects.requireNonNull(location.getWorld()).getName() + ":" + location.getX() + ":" + location.getY() + ":"
                 + location.getZ() + ":" + location.getPitch() + ":" + location.getYaw();
     }
 
@@ -64,12 +66,15 @@ public class HomesYML extends DataHandler {
         return cfg.getStringList("homes." + player.getUniqueId());
     }
 
-    public boolean addHome(Player player, Location loc, String name) {
+    public void addHome(Player player, Location loc, String name) {
         List<String> homes = getPlayerHomes(player);
         boolean canAdd = true;
         if(!homes.isEmpty()) {
             for(String s : homes) {
-                if(s.startsWith(name)) canAdd = false;
+                if(s.startsWith(name)) {
+                    canAdd = false;
+                    break;
+                }
             }
         }
 
@@ -77,28 +82,9 @@ public class HomesYML extends DataHandler {
             homes.add(name + ";" + locationToString(loc) + ":default");
             setData("homes." + player.getUniqueId(), homes);
         }
-
-        return canAdd;
     }
 
-    public boolean addHome(Player player, Location loc, String name, Material m) {
-        List<String> homes = getPlayerHomes(player);
-        boolean canAdd = true;
-        if(!homes.isEmpty()) {
-            for(String s : homes) {
-                if(s.startsWith(name)) canAdd = false;
-            }
-        }
-
-        if(canAdd) {
-            homes.add(name + ";" + locationToString(loc) + ":" + m.toString());
-            setData("homes." + player.getUniqueId(), homes);
-        }
-
-        return canAdd;
-    }
-
-    public boolean overrideHome(Player player, Location loc, String name, Material m) {
+    public void overrideHome(Player player, Location loc, String name, Material m) {
         List<String> homes = getPlayerHomes(player);
         String oldHome = null;
         if(!homes.isEmpty()) {
@@ -110,27 +96,23 @@ public class HomesYML extends DataHandler {
         if(oldHome != null) {
             homes.remove(oldHome);
             homes.add(name + ";" + locationToString(loc) + ":" + m.toString());
-            setData("homes." + player.getUniqueId(), homes);
+            setData("homes." + player.getUniqueId(), homes, true);
         }
 
-        return oldHome != null;
     }
 
-    public boolean deleteHome(OfflinePlayer player, String name) {
+    public void deleteHome(OfflinePlayer player, String name) {
         List<String> homes = getPlayerHomes(player);
-        boolean canDel = false;
         if(!homes.isEmpty()) {
             for(String s : homes) {
                 if(s.startsWith(name)) {
                     homes.remove(s);
                     setData("homes." + player.getUniqueId(), homes);
-                    canDel = true;
                     break;
                 }
             }
         }
 
-        return canDel;
     }
 
     public String getHomeRaw(OfflinePlayer p, String homeName) {
