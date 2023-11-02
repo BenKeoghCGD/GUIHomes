@@ -1,6 +1,6 @@
 <br>
 <p align="center">
-<img src="http://img.benkeoghcgd.co.uk/Spigot/GUIHomesHeader.png">
+<img src="https://shared.benkeoghcgd.co.uk/Spigot/Plugins/HEAD_GUIHomes.png">
 </p>
 <br>
 <p align="center">
@@ -11,7 +11,7 @@
 </p>
 <p align="center">
     <a href="https://www.spigotmc.org/resources/102909/"><img src="https://pluginbadges.glitch.me/api/v1/dl/Spigot-%23ff9100.svg?spigot=102909&style=for-the-badge"/></a>
-    <img src="https://img.shields.io/maven-metadata/v?label=MAVEN&metadataUrl=http%3A%2F%2Fapi.benkeoghcgd.co.uk%2Fmaven2%2Fuk%2Fco%2Fbenkeoghcgd%2Fapi%2FGUIHomes%2Fmaven-metadata.xml&style=for-the-badge"/>
+    <img src="https://img.shields.io/maven-metadata/v?label=MAVEN&metadataUrl=https%3A%2F%2Fmaven.benkeoghcgd.co.uk%2Fuk%2Fco%2Fbenkeoghcgd%2Fapi%2FGUIHomes%2Fmaven-metadata.xml&style=for-the-badge"/>
     <img src="https://img.shields.io/spiget/version/102909?label=LATEST&style=for-the-badge"/>
 </p>
 
