@@ -15,6 +15,12 @@
     <img src="https://img.shields.io/spiget/version/102909?label=LATEST&style=for-the-badge"/>
 </p>
 
+<p align="center">
+    <a href="https://www.spigotmc.org/resources/axiuscore.102852/">
+        <img src="https://shared.benkeoghcgd.co.uk/Spigot/Statuses/Core.png"/>
+    </a>
+</p>
+
 # Homes Made Easy
 Hey! thanks for being interested in using GUIHomes. GUIHomes is a super lightweight home plugin for Spigot, utilising GUIs for usability. GUIHomes is cut and dry - doing what it says it does and nothing more.
 
@@ -23,3 +29,14 @@ Hey! thanks for being interested in using GUIHomes. GUIHomes is a super lightwei
 - Manage homes using GUI
 - Teleport using GUI
 - Permission-based maximum homes
+- Custom home icons
+- Permission-based home icons
+- Permission-baded home icon groups
+
+## Installation
+Navigate to the [AxiusCore spigot page](https://www.spigotmc.org/resources/axiuscore.102852/), or the [releases page on GitHub](https://github.com/BenKeoghCGD/AxiusCore/releases), and download the latest stable build of AxiusCore.
+Navigate to the [GUIHomes spigot page](https://www.spigotmc.org/resources/102909/), or the [releases page on GitHub](https://github.com/BenKeoghCGD/GUIHomes/releases), and download the latest stable build of GUIHomes.
+The core and GUIHomes will be downloaded as `.jar` files, and must be placed in the `plugins` folder of your server.
+
+## Usage
+More in-depth installation, usage and configuration information can be found on [the wiki](../../wiki)
